@@ -1,0 +1,14 @@
+credentials:
+  usernames:
+    sloumbou:
+      email: scoty.loumbou@eco-dechets.fr
+      name: Scoty Loumbou
+      password: $2b$12$ysKQRj1djasP4eT5hb9njuxJ1p.gur146x1U6kZQCRNKzozcD8Kbm # To be replaced with hashed password
+
+cookie:
+  expiry_days: 30
+  key: some_signature_key
+  name: some_cookie_name
+preauthorized:
+  emails:
+  - melsby@gmail.com

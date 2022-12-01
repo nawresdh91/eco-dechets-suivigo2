@@ -18,15 +18,29 @@ mydb = mysql.connector.connect(
 class Database:
     def __init__(self):
         self.cursor = mydb.cursor()
+        self.connect = mydb
+        self.migrate()
 
     def migrate(self):
-        self.create_table_users()
+        self.__create_table_users()
+        self.__create_table_go()
 
-    def create_table_users(self):
+    def __create_table_go(self):
+        self.cursor.execute(
+            "CREATE TABLE IF NOT EXISTS fournisseur (id INT AUTO_INCREMENT PRIMARY KEY, carte VARCHAR(255), vehicule VARCHAR(255), date VARCHAR(255), produit VARCHAR(255), quantite VARCHAR(255), tarif_ht FLOAT, tarif_ttc FLOAT, montant FLOAT ,fournisseur VARCHAR(255), km VARCHAR(255))")
+        mydb.commit()
+        print('Table goods created')
+
+    def __create_table_users(self):
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, password VARCHAR(255), email VARCHAR(255) UNIQUE, name VARCHAR(255))")
         mydb.commit()
         print('Table users created')
+
+    def insert_go(self, carte, vehicule, date, produit, quantite, tarif_ht, tarif_ttc, montant, fournisseur, km):
+        self.cursor.execute("INSERT INTO fournisseur (carte, vehicule, date, produit, quantite, tarif_ht, tarif_ttc, montant, fournisseur, km) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (carte, vehicule, date, produit, quantite, tarif_ht, tarif_ttc, montant, fournisseur, km))
+        mydb.commit()
+        print('Fournisseur inserted')
 
     def insert_user(self, password, email, name):
         self.cursor.execute("INSERT INTO users (password, email, name) VALUES (%s, %s, %s)", (password, email, name))
@@ -44,6 +58,10 @@ class Database:
     def delete_user(self, email):
         self.cursor.execute("DELETE FROM users WHERE email = %s", (email,))
         mydb.commit()
+
+    def get_go(self):
+        self.cursor.execute("SELECT * FROM fournisseur")
+        return self.cursor.fetchall()
 
     def login(self, email, password):
         try:

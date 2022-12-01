@@ -1,5 +1,9 @@
+import numpy as np
+
 import streamlit as st
 import pandas as pd
+
+from database import Database
 
 
 class Avia:
@@ -21,6 +25,34 @@ class Avia:
             return st.write(self.df)
         else:
             return st.write('Le fichier n\'est pas un fichier Avia')
+
+    def show_upload_btn(self):
+        if st.button('upload data'):
+            with st.spinner('Wait for it...'):
+                try:
+                    self.__insert_data()
+                    st.success('Data uploaded')
+                except Exception as e:
+                    print(e)
+                    st.error(e)
+                    st.stop()
+
+    def __insert_data(self):
+        # insert all data into the database
+        for i in range(len(self.df)):
+            # get the data
+            card_number = self.df.iloc[i]['NUM CARTE'].replace("'", "")
+            vehicle = self.df.iloc[i]['IMMATRICULATION'].replace(" ", "")
+            date = self.df.iloc[i]['DATE']
+            product = self.df.iloc[i]['PRODUIT']
+            quantity = np.float(self.df.iloc[i]['QUANTITE'].replace(",", "."))
+            amount_ht = None
+            amount_ttc = np.float(self.df.iloc[i]['PU'].replace(",", "."))
+            amount = np.float(self.df.iloc[i]['MONTANT'].replace(",", "."))
+            vendor = self.vendor
+            km = np.int(self.df.iloc[i]['KM'])
+            Database().insert_go(carte=card_number, vehicule=vehicle, date=date, produit=product, quantite=quantity,
+                                 tarif_ht=amount_ht, tarif_ttc=amount_ttc, montant=amount, fournisseur=vendor, km=km)
 
     def __is_avia(self):
         # verify df column exist
