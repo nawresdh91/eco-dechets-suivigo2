@@ -1,4 +1,6 @@
-import os
+import random
+import string
+
 import mysql.connector
 import streamlit as st
 
@@ -35,12 +37,17 @@ class Database:
         print('Table users created')
 
     def insert_go(self, carte, vehicule, date, produit, quantite, tarif_ht, tarif_ttc, montant, fournisseur, km):
-        self.cursor.execute("INSERT INTO fournisseur (carte, vehicule, date, produit, quantite, tarif_ht, tarif_ttc, montant, fournisseur, km) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (carte, vehicule, date, produit, quantite, tarif_ht, tarif_ttc, montant, fournisseur, km))
+        self.cursor.execute(
+            "INSERT INTO fournisseur (carte, vehicule, date, produit, quantite, tarif_ht, tarif_ttc, montant, fournisseur, km) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (carte, vehicule, date, produit, quantite, tarif_ht, tarif_ttc, montant, fournisseur, km))
         mydb.commit()
         print('Fournisseur inserted')
 
     def insert_user(self, password, email, name):
-        self.cursor.execute("INSERT INTO users (password, email, name) VALUES (%s, %s, %s)", (password, email, name))
+        hashed_password = stauth.Hasher([password]).generate()[0]
+        print(hashed_password)
+        self.cursor.execute("INSERT INTO users (password, email, name) VALUES (%s, %s, %s)",
+                            (hashed_password, email, name))
         mydb.commit()
         print('User inserted')
 
@@ -52,6 +59,12 @@ class Database:
         self.cursor.execute("SELECT * FROM users")
         return self.cursor.fetchall()
 
+    def reset_password(self, email, password):
+        hashed_password = stauth.Hasher([password]).generate()[0]
+        self.cursor.execute("UPDATE users SET password = %s WHERE email = %s", (hashed_password, email))
+        mydb.commit()
+        return password
+
     def delete_user(self, email):
         self.cursor.execute("DELETE FROM users WHERE email = %s", (email,))
         mydb.commit()
@@ -59,6 +72,18 @@ class Database:
     def get_go(self):
         self.cursor.execute("SELECT * FROM fournisseur")
         return self.cursor.fetchall()
+
+    def add_role_to_users(self):
+        self.cursor.execute("ALTER TABLE users ADD role VARCHAR(255) DEFAULT 'user'")
+        mydb.commit()
+        print('Role added to users')
+
+    @staticmethod
+    def generate_password(length=8):
+        password = ''
+        for i in range(length):
+            password += random.choice(string.ascii_letters + string.digits)
+        return password
 
     def login(self, email, password):
         try:

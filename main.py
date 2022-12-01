@@ -1,4 +1,4 @@
-from views import home, statistics
+from views import home, statistics, admin
 
 import streamlit as st
 import streamlit_authenticator as stauth
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     if authentication_status:
         st.title('Suivie fournisssseurs GO')
-        tab1, tab2 = st.tabs(["Home", "Statistics"])
+        tab1, tab2, tab3 = st.tabs(["Home", "Statistics", "Admin"])
         with tab1:
             st.header('Home')
             home.main()
@@ -44,3 +44,6 @@ if __name__ == '__main__':
         with tab2:
             st.header('Statistics')
             statistics.main()
+
+        with tab3:
+            admin.main()
