@@ -1,3 +1,5 @@
+import os
+
 import random
 import string
 
@@ -6,11 +8,17 @@ import streamlit as st
 
 import streamlit_authenticator as stauth
 
+#get env variables
+DB_HOST = os.environ.get('DB_HOST')
+DB_USER = os.environ.get('DB_USER')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+DB_NAME = os.environ.get('DB_DATABASE')
+
 mydb = mysql.connector.connect(
-    host=st.secrets['DB_HOST'],
-    user=st.secrets['DB_USER'],
-    password=st.secrets['DB_PASSWORD'],
-    database=st.secrets['DB_DATABASE']
+    host=DB_HOST,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    database=DB_NAME
 )
 
 
