@@ -1,5 +1,6 @@
 import os
 
+
 import random
 import string
 
@@ -7,6 +8,9 @@ import mysql.connector
 import streamlit as st
 
 import streamlit_authenticator as stauth
+#load env variables
+from dotenv import load_dotenv
+load_dotenv()
 
 #get env variables
 DB_HOST = os.environ.get('DB_HOST')
