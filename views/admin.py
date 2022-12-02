@@ -1,6 +1,10 @@
 from database import Database
 import pandas as pd
 import streamlit as st
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def main():
@@ -8,7 +12,7 @@ def main():
     user = Database().get_user(st.session_state["username"])
     user_email = user[2]
 
-    if user_email in st.secrets["ADMIN"]:
+    if user_email in os.environ.get('ADMIN'):
         st.header('Admin')
         with st.form(key='my_form', clear_on_submit=True):
             email = st.text_input('Email')
