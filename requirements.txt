@@ -22,7 +22,7 @@ mysql-connector-python==8.0.31
 numpy==1.21.6
 openpyxl==3.0.10
 packaging==21.3
-pandas==1.5.1
+pandas==1.3.5
 Pillow==9.2.0
 protobuf==3.20.1
 pyarrow==9.0.0
