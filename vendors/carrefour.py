@@ -28,11 +28,16 @@ class Carrefour:
 
     @staticmethod
     def show_download_btn(df):
+
         if df is None:
-            st.info(
-                'Pour ce founisseur, vous devez télécharger le fichier excel de référence et le completer manuellement.')
-            if st.button('Télécharger le fichier'):
-                webbrowser.open_new_tab(url)
+            st.write(f'''
+                    <p>Pour ce founisseur, vous devez télécharger le fichier excel de référence et le completer manuellement. <a target="_blank" href="https://www.dropbox.com/s/8x087om1c9bhuwj/canevas_import.xlsx?dl=0">
+                            Télécharger le fichier excel
+                        </a></p>
+
+                        ''',
+                     unsafe_allow_html=True
+                     )
 
     def show_data(self):
         return st.write(self.df)
