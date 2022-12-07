@@ -35,14 +35,13 @@ if __name__ == '__main__':
         st.info('Authentication required')
 
     if authentication_status:
-        st.title('Suivie fournisssseurs GO')
-        tab1, tab2, tab3 = st.tabs(["Home", "Statistics", "Admin"])
+        tab1, tab2, tab3 = st.tabs(["Accueil", "Statistique", "Admin"])
         with tab1:
-            st.header('Home')
+            st.header('Accueil')
             home.main()
 
         with tab2:
-            st.header('Statistics')
+            st.header('Statistique')
             statistics.main()
 
         with tab3:

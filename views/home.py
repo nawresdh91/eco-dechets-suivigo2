@@ -1,5 +1,6 @@
 import streamlit as st
 from vendors.avia import Avia
+from vendors.carrefour import Carrefour
 from vendors.dats import DATS
 from vendors.dkv import DKV
 from vendors.intermarche import Intermarche
@@ -12,7 +13,8 @@ def main():
     # authenticator.logout('Se déconnecter', 'main')
     # st.sidebar.title(f"Welcome {name}")
     vendor = st.selectbox('Selectionner un fournisseur',
-                          ('Avia', 'DATS', 'DKV', 'Intermarche', 'Leclerc', 'Thevenin', 'Total'))
+                          ('Avia', 'DATS', 'DKV', 'Intermarche', 'Leclerc', 'Thevenin', 'Total', 'Carrefour', 'Petrol and Co', 'Soufflet'))
+
     if vendor is not None:
         csv = st.file_uploader('Selectionner un fichier CSV ou Excel', type=['csv', 'xlsx', 'xls'])
         if csv is not None:
@@ -31,6 +33,15 @@ def main():
                 data = Thevenin(file=csv, vendor=vendor)
             elif vendor == 'Total':
                 data = Total(file=csv, vendor=vendor)
+            elif vendor == 'Carrefour':
+                data = Carrefour(file=csv, vendor=vendor)
+            elif vendor == 'Petrol and Co':
+                data = Carrefour(file=csv, vendor=vendor)
+            elif vendor == 'Soufflet':
+                data = Carrefour(file=csv, vendor=vendor)
+
+        if vendor in ('Carrefour', 'Petrol And Co', 'Soufflet'):
+            Carrefour.show_download_btn(csv)
 
         if csv is not None:
             # data.show_filter()
