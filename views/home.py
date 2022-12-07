@@ -13,7 +13,7 @@ def main():
     # authenticator.logout('Se déconnecter', 'main')
     # st.sidebar.title(f"Welcome {name}")
     vendor = st.selectbox('Selectionner un fournisseur',
-                          ('Avia', 'DATS', 'DKV', 'Intermarche', 'Leclerc', 'Thevenin', 'Total', 'Carrefour', 'Petrol and Co', 'Soufflet'))
+                          ('Avia', 'DATS', 'DKV', 'Intermarche', 'Leclerc', 'Thevenin', 'Total', 'Carrefour', 'Petrol And Co', 'Soufflet'))
 
     if vendor is not None:
         csv = st.file_uploader('Selectionner un fichier CSV ou Excel', type=['csv', 'xlsx', 'xls'])
