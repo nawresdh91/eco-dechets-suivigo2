@@ -7,13 +7,17 @@ from database import Database
 class Intermarche:
     def __init__(self, file, vendor='Intermarche'):
         try:
-            self.df = pd.read_csv(file, sep=';', index_col=False, dtype=str)
+            # verify if file is csv or excel
+            if file.name.endswith('.csv'):
+                self.df = pd.read_csv(file, sep=';', index_col=False, dtype=str)
+            elif file.name.endswith('.xlsx'):
+                self.df = pd.read_excel(file, index_col=False, dtype=str)
             self.back_up = self.df.copy()
         except Exception as e:
             st.error(e)
             st.stop()
         self.vendor = vendor
-        self.__is_intermarche()
+        #self.__is_intermarche()
 
     def show_data(self):
         return st.write(self.df)
@@ -33,10 +37,10 @@ class Intermarche:
         # insert all data into the database
         for i in range(len(self.df)):
             # get the data
-            card_number = self.df.iloc[i]['Carte']
-            vehicle = self.df.iloc[i]['Chauffeur/Véhicule'].replace("-", "")
-            date = self.df.iloc[i]['Date']
-            product = "GO"
+            card_number = self.df.iloc[i]['Numéro de carte']
+            vehicle = self.df.iloc[i]['Immatriculation'].replace("-", "")
+            date = self.df.iloc[i]['Date et heure']
+            product = self.df.iloc[i]['Libellé article']
             quantity = self.df.iloc[i]['Quantité']
             amount_ht = self.df.iloc[i]['Montant HT']
             amount_ttc = self.df.iloc[i]['Montant TTC']
