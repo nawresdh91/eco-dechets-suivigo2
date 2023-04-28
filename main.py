@@ -1,16 +1,17 @@
 from views import home, statistics, admin
 
+
 import streamlit as st
 import streamlit_authenticator as stauth
 
-from database import Database
+from database2 import Database2
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     st.set_page_config(page_title='Gestion des carburants', page_icon=':fuelpump:', layout='wide')
 
-    users = Database().get_users()
+    users = Database2().get_users()
 
     usernames = [user[2] for user in users]
     names = [user[3] for user in users]
@@ -44,5 +45,8 @@ if __name__ == '__main__':
             st.header('Statistique')
             statistics.main()
 
-        with tab3:
-            admin.main()
+        #with tab3:
+            #admin.main()
+
+
+

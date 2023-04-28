@@ -3,10 +3,9 @@ from dotenv import load_dotenv
 # charger les variables d'environnement à partir d'un fichier .env
 load_dotenv()
 
-import random
-import string
 
 import mysql.connector
+from sqlalchemy import create_engine
 
 
 import streamlit_authenticator as stauth
@@ -19,6 +18,8 @@ DB_HOST = os.environ.get('DB_HOST')
 DB_USER = os.environ.get('DB_USER')
 DB_PASSWORD = os.environ.get('DB_PASSWORD')
 DB_NAME = os.environ.get('DB_DATABASE')
+
+
 # connexion à la base de données MySQL
 mydb = mysql.connector.connect(
     host=DB_HOST,
@@ -27,7 +28,7 @@ mydb = mysql.connector.connect(
     database=DB_NAME
 )
 
-
+#mydb.connect()
 
 class Database:
     #initialiser les variables de connexion à la base de données
@@ -104,6 +105,7 @@ class Database:
         mydb.commit()
         print('Carte inserted')
 
+
     def insert_client(self, id, num, nom,message):
         self.cursor.execute("INSERT INTO client (id, num, nom,message) VALUES (%s, %s, %s, %s)", (id, num, nom,message))
         mydb.commit()
@@ -132,12 +134,12 @@ class Database:
 
 
     def insert_vehicule(self, id,immatriculation):
-        self.cursor.execute("INSERT INTO client (id,immatriculation) VALUES (%s, %s)", (id,immatriculation))
+        self.cursor.execute("INSERT INTO vehicule(id,immatriculation) VALUES (%s, %s)", (id,immatriculation))
         mydb.commit()
         print('vehicule inserted')   
 
     def insert_ville(self, id,nom,code_postal,departement):
-        self.cursor.execute("INSERT INTO client (id,nom,code_postal,departement) VALUES (%s, %s,%s, %s))", (id,nom,code_postal,departement))
+        self.cursor.execute("INSERT INTO ville (id,nom,code_postal,departement) VALUES (%s, %s,%s, %s))", (id,nom,code_postal,departement))
         mydb.commit()
         print('ville inserted')   
 
@@ -157,18 +159,9 @@ class Database:
             return self.cursor.fetchone()
         except:
             return None        
-
-    def login(self,email,password):
-        try:
-            hashed_password = stauth.Hasher([password]).generate()
-            self.cursor.execute("SELECT * FROM users WHERE email = %s AND password = %s", (email, hashed_password[0]))
-            return self.cursor.fetchone()
-        except:
-            return None 
         
+
+
     
-
-
-
 
 
